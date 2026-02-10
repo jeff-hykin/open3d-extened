@@ -1,15 +1,6 @@
 # open3d-unofficial-arm
 
-Universal Open3D installer that works on all platforms.
-
-## What is this?
-
-This package provides a universal way to install Open3D that automatically does the right thing for your platform:
-
-- **ARM64 (aarch64)**: Installs pre-built ARM wheels (Open3D 0.19.0) - a stop-gap while waiting for official ARM support
-- **Other platforms** (x86_64, etc.): Installs the official `open3d` package from PyPI
-
-No more platform-specific installation logic in your code!
+Universal Open3D package that works on **all platforms** including ARM64.
 
 ## Installation
 
@@ -17,68 +8,92 @@ No more platform-specific installation logic in your code!
 pip install open3d-unofficial-arm
 ```
 
+Works everywhere:
+- **ARM64 Linux**: Installs pre-built ARM wheels (Python 3.10, 3.11, 3.12, 3.13)
+- **Other platforms** (x86_64, macOS, Windows): Automatically installs official `open3d`
+
 ## Usage
 
-### Option 1: Direct Import (Recommended)
 ```python
-import open3d_unofficial_arm as o3d
+import open3d as o3d  # Same on all platforms!
 
-# Use it like normal open3d
+# Use exactly like normal
 pcd = o3d.geometry.PointCloud()
+print(o3d.__version__)
 ```
 
-On first import, this automatically installs the appropriate Open3D package for your platform.
-
-### Option 2: Traditional Import
-```bash
-# One-time setup after installation:
-open3d-arm-setup
-```
-
-Then in your code:
-```python
-import open3d as o3d
-```
-
-### Option 3: In Your Project
-Add to your `requirements.txt`:
-```
-open3d-unofficial-arm
-```
-
-Then in your code:
-```python
-import open3d_unofficial_arm  # Triggers auto-install
-import open3d as o3d          # Now works everywhere
-```
-
-## Supported Platforms
-
-**ARM64:**
-- **OS**: Linux (manylinux_2_35)
-- **Architecture**: ARM64 (aarch64)
-- **Python versions**: 3.10, 3.11, 3.12, 3.13
-
-**Other platforms:**
-- Automatically installs official `open3d` package with full platform support
+**Zero code changes.** Works identically to the official package.
 
 ## How It Works
 
-1. When you import `open3d_unofficial_arm`, it checks if `open3d` is installed
-2. If not, it automatically installs:
-   - ARM64: Bundled wheel for your Python version
-   - Other platforms: Official `open3d` from PyPI
-3. Re-exports all `open3d` functionality for direct use
+This package uses **conditional dependencies** (PEP 508 environment markers):
 
-## Notes
+```toml
+dependencies = [
+    "open3d>=0.18.0; platform_machine != 'aarch64'"
+]
+```
 
-- This is an **unofficial** package and is not affiliated with the Open3D project
-- On ARM64: Uses bundled wheels as a temporary solution until official ARM support is available
-- On other platforms: Installs the official open3d package
-- The package automatically detects your platform and installs the correct version
+### On ARM64:
+- Installs ARM-specific wheels bundled with this package
+- Provides `open3d` package directly
+
+### On other platforms:
+- pip installs official `open3d` as a dependency
+- You get the official package with full support
+
+This is the **standard, non-hacky way** to provide platform-specific packages in Python!
+
+## Why This Package?
+
+- Official Open3D doesn't publish ARM64 wheels yet
+- This fills the gap for ARM users
+- Also works as a drop-in on other platforms for convenience
+- Single `pip install` command works everywhere
+
+## Platform Support
+
+| Platform | Source | Status |
+|----------|--------|--------|
+| ARM64 Linux (aarch64) | This package | ✅ 0.19.0 |
+| x86_64 Linux | Official open3d | ✅ Latest |
+| macOS (Intel/Apple Silicon) | Official open3d | ✅ Latest |
+| Windows | Official open3d | ✅ Latest |
+
+## Relationship to Official Open3D
+
+- **NOT** affiliated with or endorsed by the Open3D project
+- Unofficial community build for ARM platforms
+- Use official `open3d` when ARM support is available
+- Official project: https://github.com/isl-org/Open3D
+
+## For Maintainers
+
+### Building ARM Wheels
+
+1. Get ARM wheels named `open3d-*.whl`
+2. Run rename script:
+   ```bash
+   python rename_wheels.py
+   ```
+3. Upload to PyPI:
+   ```bash
+   ./run/publish
+   ```
+
+The script:
+- Keeps package name as `open3d` (preserves imports)
+- Changes distribution name to `open3d-unofficial-arm`
+- Updates version from `pyproject.toml`
 
 ## License
 
-MIT License - See LICENSE file for details
+MIT License - See LICENSE file.
 
-The bundled Open3D wheels are subject to their own license terms.
+Open3D code is subject to the MIT license. See https://github.com/isl-org/Open3D for details.
+
+## Support
+
+- **ARM wheel issues**: Open an issue in this repository
+- **Open3D bugs/features**: Report to official Open3D project
+- Works identically to official package on all platforms

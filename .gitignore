@@ -618,3 +618,17 @@ settings/home/.gitconfig
 settings/home/.mongorc.js
 settings/home/.ungitrc
 settings/home/.vuerc
+
+# Renamed wheels for PyPI upload
+renamed_wheels/
+rename_wheels.py
+RELEASE_INSTRUCTIONS.md
+
+# Old wrapper package approach (no longer used)
+open3d_unofficial_arm/__init__.py
+open3d_unofficial_arm/install_hook.py
+dist/
+build/
+*.egg-info/
+pyproject.toml
+MANIFEST.in

@@ -4,11 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "open3d-unofficial-arm"
-version = "0.19.0.post2"
-description = "Universal Open3D installer: ARM wheels + fallback to official package"
+version = "0.19.0.post4"
+description = "Open3D with ARM64 support - uses official package on other platforms"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
+dependencies = [
+    "open3d>=0.18.0; platform_machine != 'aarch64' or platform_system != 'Linux'"
+]
 authors = [
     {name = "Community Contributor"}
 ]
