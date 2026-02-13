@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "open3d-unofficial-arm"
-version = "0.19.0.post7"
+version = "0.19.0.post8"
 description = "Open3D with ARM64 support - uses official package on other platforms"
 readme = "README.md"
 requires-python = ">=3.10"
