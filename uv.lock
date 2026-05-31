@@ -1019,7 +1019,7 @@ wheels = [
 
 [[package]]
 name = "open3d-unofficial-arm"
-version = "0.19.0.post8"
+version = "0.19.0.post9"
 source = { editable = "." }
 dependencies = [
     { name = "open3d", marker = "platform_machine != 'aarch64' or sys_platform != 'linux'" },
